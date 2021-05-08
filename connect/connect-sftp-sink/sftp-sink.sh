@@ -19,7 +19,7 @@ curl -X PUT \
                "schema.compatibility": "NONE",
                "format.class": "io.confluent.connect.sftp.sink.format.avro.AvroFormat",
                "storage.class": "io.confluent.connect.sftp.sink.storage.SftpSinkStorage",
-               "sftp.host": "sftp-server",
+               "sftp.host": "ssh-container_ssh-server_1",
                "sftp.port": "22",
                "sftp.username": "foo",
                "sftp.password": "pass",
@@ -37,8 +37,8 @@ seq -f "{\"f1\": \"value%g\"}" 10 | docker exec -i connect kafka-avro-console-pr
 sleep 10
 
 log "Listing content of ./upload/topics/test_sftp_sink/partition\=0/"
-docker exec sftp-server bash -c "ls /home/foo/upload/topics/test_sftp_sink/partition\=0/"
+docker exec ssh-container_ssh-server_1 bash -c "ls /home/foo/upload/topics/test_sftp_sink/partition\=0/"
 
-docker cp sftp-server:/home/foo/upload/topics/test_sftp_sink/partition\=0/test_sftp_sink+0+0000000000.avro /tmp/
+docker cp ssh-container_ssh-server_1:/home/foo/upload/topics/test_sftp_sink/partition\=0/test_sftp_sink+0+0000000000.avro /tmp/
 
 docker run -v /tmp:/tmp actions/avro-tools tojson /tmp/test_sftp_sink+0+0000000000.avro
