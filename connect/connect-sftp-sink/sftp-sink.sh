@@ -7,6 +7,9 @@ source ${DIR}/../../scripts/utils.sh
 ${DIR}/../../environment/plaintext/start.sh "${PWD}/docker-compose.plaintext.yml"
 
 docker cp ./connect-krb5.conf connect:/etc/krb5.conf
+docker cp ./connect-ssh-config connect:/etc/ssh/ssh_config
+docker cp ./sshuser.keytab connect:/home/appuser/sshuser.keytab
+docker exec -u 0 connect chown appuser:appuser sshuser.keytab
 
 log "Creating SFTP Sink connector"
 curl -X PUT \
