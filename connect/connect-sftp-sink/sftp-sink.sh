@@ -6,6 +6,8 @@ source ${DIR}/../../scripts/utils.sh
 
 ${DIR}/../../environment/plaintext/start.sh "${PWD}/docker-compose.plaintext.yml"
 
+docker cp ./connect-krb5.conf connect:/etc/krb5.conf
+
 log "Creating SFTP Sink connector"
 curl -X PUT \
      -H "Content-Type: application/json" \
