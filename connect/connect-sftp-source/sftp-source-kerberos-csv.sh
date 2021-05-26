@@ -6,6 +6,12 @@ source ${DIR}/../../scripts/utils.sh
 
 ${DIR}/../../environment/plaintext/start.sh "${PWD}/docker-compose.plaintext.yml"
 
+docker cp ./connect-krb5.conf connect:/etc/krb5.conf
+docker cp ./connect-ssh-config connect:/etc/ssh/ssh_config
+docker cp ./sshuser.keytab connect:/home/appuser/sshuser.keytab
+docker exec -u 0 connect chown appuser:appuser sshuser.keytab
+#docker exec connect kinit sshuser -k -t sshuser.keytab
+
 docker exec ssh-container_ssh-server_1 bash -c "
 mkdir -p /home/sshuser/upload/input
 mkdir -p /home/sshuser/upload/error
@@ -32,8 +38,9 @@ curl -X PUT \
                "finished.path": "/home/sshuser/upload/finished",
                "input.file.pattern": "csv-sftp-source.csv",
                "sftp.username":"sshuser",
-               "sftp.password":"serverpassword",
-               "sftp.host":"<mapped ip>",
+               "kerberos.keytab.path": "/home/appuser/sshuser.keytab",
+               "kerberos.user.principal": "sshuser",
+               "sftp.host":"<mapped.ip>",
                "sftp.port":"2222",
                "kafka.topic": "sftp-testing-topic",
                "csv.first.row.as.header": "true",
