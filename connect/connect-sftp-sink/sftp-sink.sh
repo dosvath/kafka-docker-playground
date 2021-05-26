@@ -6,10 +6,10 @@ source ${DIR}/../../scripts/utils.sh
 
 ${DIR}/../../environment/plaintext/start.sh "${PWD}/docker-compose.plaintext.yml"
 
-docker cp ./connect-krb5.conf connect:/etc/krb5.conf
-docker cp ./connect-ssh-config connect:/etc/ssh/ssh_config
-docker cp ./sshuser.keytab connect:/home/appuser/sshuser.keytab
-docker exec -u 0 connect chown appuser:appuser sshuser.keytab
+#docker cp ./connect-krb5.conf connect:/etc/krb5.conf
+#docker cp ./connect-ssh-config connect:/etc/ssh/ssh_config
+#docker cp ./sshuser.keytab connect:/home/appuser/sshuser.keytab
+#docker exec -u 0 connect chown appuser:appuser sshuser.keytab
 
 log "Creating SFTP Sink connector"
 curl -X PUT \
@@ -24,11 +24,11 @@ curl -X PUT \
                "schema.compatibility": "NONE",
                "format.class": "io.confluent.connect.sftp.sink.format.avro.AvroFormat",
                "storage.class": "io.confluent.connect.sftp.sink.storage.SftpSinkStorage",
-               "sftp.host": "ssh-container_ssh-server_1",
-               "sftp.port": "22",
-               "sftp.username": "foo",
-               "sftp.password": "pass",
-               "sftp.working.dir": "/upload",
+               "sftp.host": "<mapped-ip>",
+               "sftp.port": "2222",
+               "sftp.username": "sshuser",
+               "sftp.password": "serverpassword",
+               "sftp.working.dir": "~",
                "confluent.license": "",
                "confluent.topic.bootstrap.servers": "broker:9092",
                "confluent.topic.replication.factor": "1"
