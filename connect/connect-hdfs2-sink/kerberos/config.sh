@@ -33,8 +33,8 @@ create_config() {
  default_realm = $REALM
  dns_lookup_realm = false
  dns_lookup_kdc = false
- ticket_lifetime = 600
- renew_lifetime = 604800
+ ticket_lifetime = 30
+ renew_lifetime = 100
  max_renewable_life = 604800
  max_life = 604800
  renewable = true
