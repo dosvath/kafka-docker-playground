@@ -53,7 +53,7 @@ curl -X PUT \
                "s3.part.size": 52428801,
                "flush.size": "3",
                "storage.class": "io.confluent.connect.s3.storage.S3Storage",
-               "format.class": "io.confluent.connect.s3.format.avro.AvroFormat",
+               "format.class": "io.confluent.connect.s3.format.parquet.ParquetFormat",
                "schema.compatibility": "NONE"
           }' \
      http://localhost:8083/connectors/s3-sink/config | jq .

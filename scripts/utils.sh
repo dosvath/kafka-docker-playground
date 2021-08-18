@@ -237,7 +237,7 @@ EOF
         connector_jar_name=$(basename ${CONNECTOR_JAR})
         current_jar_path="/usr/share/confluent-hub-components/$connector_path/lib/$name-$CONNECTOR_TAG.jar"
         set +e
-        docker run vdesabou/kafka-docker-playground-connect:${CONNECT_TAG} ls $current_jar_path
+        docker run -e KAFKA_OPTS='-verbose:class' vdesabou/kafka-docker-playground-connect:${CONNECT_TAG} ls $current_jar_path
         if [ $? -ne 0 ]
         then
           logwarn "$connector_path/lib/$name-$CONNECTOR_TAG.jar does not exist, the jar name to replace could not be found automatically"
@@ -347,7 +347,7 @@ else
           export CONNECT_TAG="$connector_jar_name"
           current_jar_path="/usr/share/confluent-hub-components/$connector_path/lib/$name-$version.jar"
           set +e
-          docker run vdesabou/kafka-docker-playground-connect:${TAG} ls $current_jar_path
+          docker run -e KAFKA_OPTS='-verbose:class' vdesabou/kafka-docker-playground-connect:${TAG} ls $current_jar_path
           if [ $? -ne 0 ]
           then
             logwarn "$connector_path/lib/$name-$version.jar does not exist, the jar name to replace could not be found automatically"
